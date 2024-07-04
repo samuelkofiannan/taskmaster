@@ -192,5 +192,5 @@ Contributions are welcome! Please follow these steps:
 ## Authors
 
 For any questions or feedback, please reach out to:
-- **Afia Owusu-Asare**: Frontend Engineer
+- **Afia Adobea Owusu-Asare**: Frontend Engineer
 - **Kofi Annan**: Backend Engineer
