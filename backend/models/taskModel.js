@@ -1,63 +1,45 @@
-const db = require('../config/dbConfig');
+const mongoose = require('mongoose');
 
 /**
- * Task model for managing tasks in the database
+ * Schema for Task model
+ * @type {mongoose.Schema}
  */
-const Task = {
-  /**
-   * Get all tasks from the database
-   * @param {function} callback - The callback function to be called when the query is complete
-   */
-  getAllTasks: (callback) => {
-    try {
-      const query = 'SELECT * FROM tasks';
-      db.query(query, (err, results) => {
-        if (err) {
-          console.error(`Error retrieving tasks: ${err}`);
-          callback(err, null);
-        } else {
-          callback(null, results);
-        }
-      });
-    } catch (error) {
-      console.error(`Error in getAllTasks: ${error}`);
-      callback(error, null);
-    }
+const taskSchema = new mongoose.Schema({
+  title: {
+    type: String,
+    required: true,
+    trim: true,
+    minlength: 3,  // Minimum length of task title
+    maxlength: 100 // Maximum length of task title
   },
-
-  /**
-   * Create a new task in the database
-   * @param {object} task - The task object containing the title, description, and status properties
-   * @param {function} callback - The callback function to be called when the query is complete
-   */
-  createTask: (task, callback) => {
-    try {
-      if (!task ||!task.title ||!task.description ||!task.status) {
-        return callback({ message: 'Invalid task object' }, null);
-      }
-
-      const escapedTask = [
-        task.title,
-        task.description,
-        task.status,
-      ].map((property) => db.escape(property));
-
-      const query = `INSERT INTO tasks (title, description, status) VALUES (${escapedTask.join(',')})`;
-      db.query(query, (err, result) => {
-        if (err) {
-          console.error(`Error creating task: ${err}`);
-          callback(err, null);
-        } else {
-          callback(null, result.insertId);
-        }
-      });
-    } catch (error) {
-      console.error(`Error in createTask: ${error}`);
-      callback(error, null);
-    }
+  description: {
+    type: String,
+    trim: true,
+    maxlength: 500 // Maximum length of task description
   },
+  dueDate: {
+    type: Date,
+    required: true
+  },
+  priority: {
+    type: String,
+    enum: ['High', 'Medium', 'Low'], // Priority options
+    default: 'Medium'
+  },
+  status: {
+    type: String,
+    enum: ['Pending', 'Completed'], // Status options
+    default: 'Pending'
+  },
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User', // Reference to the User model
+    required: true
+  }
+}, {
+  timestamps: true // Automatically add createdAt and updatedAt timestamps
+});
 
-  //... other methods...
-};
+const Task = mongoose.model('Task', taskSchema);
 
 module.exports = Task;

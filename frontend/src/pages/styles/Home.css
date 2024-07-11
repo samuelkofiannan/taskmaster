@@ -1,0 +1,139 @@
+.home-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+}
+
+.home-content {
+  width: 100%;
+  max-width: 1200px;
+}
+
+.search-filter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.search-filter input {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 70%;
+  animation: inputAnimation 1s ease-in;
+}
+
+.search-filter button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.search-filter button:hover {
+  background-color: #0056b3;
+}
+
+.task-list {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  padding: 20px;
+}
+
+.task-item {
+  margin-bottom: 10px;
+}
+
+.task-title {
+  cursor: pointer;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: #fff;
+}
+
+.task-details {
+  margin-top: 10px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: #e9ecef;
+}
+
+.task-details button {
+  margin-right: 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.task-details button:hover {
+  background-color: #0056b3;
+}
+
+.delete-confirm {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 20px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
+
+.delete-confirm button {
+  margin: 5px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.delete-confirm button:nth-of-type(1) {
+  background-color: #dc3545;
+  color: white;
+}
+
+.delete-confirm button:nth-of-type(2) {
+  background-color: #007bff;
+  color: white;
+}
+
+.delete-confirm button:nth-of-type(1):hover {
+  background-color: #c82333;
+}
+
+.delete-confirm button:nth-of-type(2):hover {
+  background-color: #0056b3;
+}
+
+@keyframes inputAnimation {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes buttonAnimation {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

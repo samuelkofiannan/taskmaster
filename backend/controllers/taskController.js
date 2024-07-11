@@ -1,124 +1,107 @@
-/**
- * Task controller
- *
- * Handles CRUD operations for tasks
- */
-
 const Task = require('../models/taskModel');
 
 /**
- * Get all tasks
- *
- * Retrieves all tasks from the database
- *
- * @param {Object} req - Express request object
- * @param {Object} res - Express response object
+ * Create a new task.
+ * @param {Object} req - The request object containing task details.
+ * @param {Object} res - The response object to send the result.
+ * @returns {void}
  */
-exports.getAllTasks = async (req, res) => {
+const createTask = async (req, res) => {
   try {
-    /**
-     * Retrieve all tasks from the database
-     */
-    const tasks = await Task.getAllTasks();
-    res.json(tasks);
-  } catch (err) {
-    /**
-     * Log error and send 500 response
-     */
-    console.error(err);
-    res.status(500).send({ message: 'Error fetching tasks' });
+    const { title, description } = req.body;
+    const newTask = new Task({ title, description, user: req.user.userId });
+    const task = await newTask.save();
+    res.status(201).json(task);
+  } catch (error) {
+    console.error('Error creating task:', error.message);
+    res.status(500).json({ message: 'Internal Server Error' });
   }
 };
 
 /**
- * Create a new task
- *
- * Creates a new task in the database
- *
- * @param {Object} req - Express request object
- * @param {Object} res - Express response object
+ * Get all tasks for the authenticated user.
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object to send the result.
+ * @returns {void}
  */
-exports.createTask = async (req, res) => {
-  const { title, description, status } = req.body;
-
-  /**
-   * Validate task data
-   */
-  if (!title || !description || !status) {
-    return res.status(400).send({ message: 'Invalid task data' });
-  }
-
+const getTasks = async (req, res) => {
   try {
-    /**
-     * Create a new task in the database
-     */
-    const taskId = await Task.createTask({ title, description, status });
-    res.status(201).json({ id: taskId, title, description, status });
-  } catch (err) {
-    /**
-     * Log error and send 500 response
-     */
-    console.error(err);
-    res.status(500).send({ message: 'Error creating task' });
+    const tasks = await Task.find({ user: req.user.userId });
+    res.status(200).json(tasks);
+  } catch (error) {
+    console.error('Error getting tasks:', error.message);
+    res.status(500).json({ message: 'Internal Server Error' });
   }
 };
 
 /**
- * Update an existing task
- *
- * Updates an existing task in the database
- *
- * @param {Object} req - Express request object
- * @param {Object} res - Express response object
+ * Get a task by ID.
+ * @param {Object} req - The request object containing task ID.
+ * @param {Object} res - The response object to send the result.
+ * @returns {void}
  */
-exports.updateTask = async (req, res) => {
-  const taskId = req.params.id;
-  const { title, description, status } = req.body;
-
-  /**
-   * Validate task data
-   */
-  if (!title || !description || !status) {
-    return res.status(400).send({ message: 'Invalid task data' });
-  }
-
+const getTaskById = async (req, res) => {
   try {
-    /**
-     * Update the task in the database
-     */
-    await Task.updateTask(taskId, { title, description, status });
-    res.json({ id: taskId, title, description, status });
-  } catch (err) {
-    /**
-     * Log error and send 500 response
-     */
-    console.error(err);
-    res.status(500).send({ message: 'Error updating task' });
+    const task = await Task.findById(req.params.id);
+    if (!task || task.user.toString() !== req.user.userId) {
+      return res.status(404).json({ message: 'Task not found' });
+    }
+    res.status(200).json(task);
+  } catch (error) {
+    console.error('Error getting task:', error.message);
+    res.status(500).json({ message: 'Internal Server Error' });
   }
 };
 
 /**
- * Delete a task
- *
- * Deletes a task from the database
- *
- * @param {Object} req - Express request object
- * @param {Object} res - Express response object
+ * Update a task by ID.
+ * @param {Object} req - The request object containing task ID and updated details.
+ * @param {Object} res - The response object to send the result.
+ * @returns {void}
  */
-exports.deleteTask = async (req, res) => {
-  const taskId = req.params.id;
-
+const updateTask = async (req, res) => {
   try {
-    /**
-     * Delete the task from the database
-     */
-    await Task.deleteTask(taskId);
-    res.json({ message: 'Task deleted successfully' });
-  } catch (err) {
-    /**
-     * Log error and send 500 response
-     */
-    console.error(err);
-    res.status(500).send({ message: 'Error deleting task' });
+    const task = await Task.findById(req.params.id);
+    if (!task || task.user.toString() !== req.user.userId) {
+      return res.status(404).json({ message: 'Task not found' });
+    }
+
+    const { title, description } = req.body;
+    task.title = title || task.title;
+    task.description = description || task.description;
+    const updatedTask = await task.save();
+    res.status(200).json(updatedTask);
+  } catch (error) {
+    console.error('Error updating task:', error.message);
+    res.status(500).json({ message: 'Internal Server Error' });
   }
+};
+
+/**
+ * Delete a task by ID.
+ * @param {Object} req - The request object containing task ID.
+ * @param {Object} res - The response object to send the result.
+ * @returns {void}
+ */
+const deleteTask = async (req, res) => {
+  try {
+    const task = await Task.findById(req.params.id);
+    if (!task || task.user.toString() !== req.user.userId) {
+      return res.status(404).json({ message: 'Task not found' });
+    }
+
+    await task.remove();
+    res.status(200).json({ message: 'Task deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting task:', error.message);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+};
+
+module.exports = {
+  createTask,
+  getTasks,
+  getTaskById,
+  updateTask,
+  deleteTask,
 };

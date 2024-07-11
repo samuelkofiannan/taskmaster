@@ -1,88 +1,99 @@
 const express = require('express');
 const router = express.Router();
 const taskController = require('../controllers/taskController');
-const { check, validationResult } = require('express-validator');
+const { authenticate } = require('../middleware/authMiddleware'); // Correctly import the authenticate function
 
-// Validate id parameter for PUT and DELETE requests
-const validateId = [
-  check('id')
-    .isInt()
-    .withMessage('ID must be an integer'),
-  (req, res, next) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
+/**
+ * @route   POST /api/tasks
+ * @desc    Create a new task
+ * @access  Private
+ */
+router.post('/', authenticate, async (req, res) => {
+  try {
+    const task = await taskController.createTask(req, res);
+    res.status(201).json({
+      message: 'Task created successfully',
+      task: task
+    });
+  } catch (error) {
+    console.error('Create task error:', error.message);
+    res.status(400).json({ error: error.message });
+  }
+});
+
+/**
+ * @route   GET /api/tasks
+ * @desc    Get all tasks
+ * @access  Private
+ */
+router.get('/', authenticate, async (req, res) => {
+  try {
+    const tasks = await taskController.getTasks(req, res);
+    res.status(200).json(tasks);
+  } catch (error) {
+    console.error('Get tasks error:', error.message);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+/**
+ * @route   GET /api/tasks/:id
+ * @desc    Get a task by ID
+ * @access  Private
+ */
+router.get('/:id', authenticate, async (req, res) => {
+  try {
+    const task = await taskController.getTaskById(req, res);
+    if (!task) {
+      return res.status(404).json({ message: 'Task not found' });
     }
-    next();
+    res.status(200).json(task);
+  } catch (error) {
+    console.error('Get task error:', error.message);
+    res.status(500).json({ error: error.message });
   }
-];
+});
 
 /**
- * Get all tasks
- * @route   GET /
- * @access  Public
+ * @route   PUT /api/tasks/:id
+ * @desc    Update a task by ID
+ * @access  Private
  */
-router.get('/', taskController.getAllTasks);
-
-/**
- * Create a new task
- * @route   POST /
- * @access  Public
- * @param   {string}  title      - The title of the task
- * @param   {string}  description - The description of the task
- * @param   {string}  status     - The status of the task (pending, in progress, completed)
- */
-router.post('/', [
-  check('title')
-    .notEmpty()
-    .withMessage('Title is required'),
-  check('description')
-    .notEmpty()
-    .withMessage('Description is required'),
-  check('status')
-    .isIn(['pending', 'in progress', 'completed'])
-    .withMessage('Status must be one of: pending, in progress, completed'),
-], (req, res, next) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return res.status(400).json({ errors: errors.array() });
+router.put('/:id', authenticate, async (req, res) => {
+  try {
+    const updatedTask = await taskController.updateTask(req, res);
+    if (!updatedTask) {
+      return res.status(404).json({ message: 'Task not found' });
+    }
+    res.status(200).json({
+      message: 'Task updated successfully',
+      task: updatedTask
+    });
+  } catch (error) {
+    console.error('Update task error:', error.message);
+    res.status(400).json({ error: error.message });
   }
-  next();
-}, taskController.createTask);
+});
 
 /**
- * Update a task
- * @route   PUT /:id
- * @access  Public
- * @param   {number}  id         - The ID of the task to update
- * @param   {string}  title      - The new title of the task
- * @param   {string}  description - The new description of the task
- * @param   {string}  status     - The new status of the task (pending, in progress, completed)
+ * @route   DELETE /api/tasks/:id
+ * @desc    Delete a task by ID
+ * @access  Private
  */
-router.put('/:id', validateId, [
-  check('title')
-    .notEmpty()
-    .withMessage('Title is required'),
-  check('description')
-    .notEmpty()
-    .withMessage('Description is required'),
-  check('status')
-    .isIn(['pending', 'in progress', 'completed'])
-    .withMessage('Status must be one of: pending, in progress, completed'),
-], (req, res, next) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return res.status(400).json({ errors: errors.array() });
+router.delete('/:id', authenticate, async (req, res) => {
+  try {
+    const deletedTask = await taskController.deleteTask(req, res);
+    if (!deletedTask) {
+      return res.status(404).json({ message: 'Task not found' });
+    }
+    res.status(200).json({
+      message: 'Task deleted successfully',
+      task: deletedTask
+    });
+  } catch (error) {
+    console.error('Delete task error:', error.message);
+    res.status(500).json({ error: error.message });
   }
-  next();
-}, taskController.updateTask);
-
-/**
- * Delete a task
- * @route   DELETE /:id
- * @access  Public
- * @param   {number}  id - The ID of the task to delete
- */
-router.delete('/:id', validateId, taskController.deleteTask);
+});
 
 module.exports = router;

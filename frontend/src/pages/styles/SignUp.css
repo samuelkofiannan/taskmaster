@@ -1,0 +1,101 @@
+.signup-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+}
+
+.signup-form {
+  max-width: 400px;
+  width: 100%;
+  text-align: center;
+  border: 1px solid #ddd;
+  padding: 20px;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+}
+
+.logo {
+  width: 80px;
+  height: auto;
+  margin-bottom: 20px;
+  animation: logoAnimation 1s ease-out;
+}
+
+@keyframes logoAnimation {
+  from {
+    transform: scale(1.5);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+h1 {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.input-group {
+  margin-bottom: 15px;
+}
+
+.input-group label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  animation: inputAnimation 1s ease-in;
+}
+
+@keyframes inputAnimation {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.error-message {
+  color: red;
+  margin-top: 10px;
+}
+
+.button-group {
+  margin-top: 20px;
+}
+
+.button-group button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  margin: 5px;
+  border-radius: 4px;
+  cursor: pointer;
+  animation: buttonAnimation 1s ease-in;
+}
+
+@keyframes buttonAnimation {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.button-group button:hover {
+  background-color: #0056b3;
+}
