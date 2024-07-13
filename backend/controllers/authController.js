@@ -21,7 +21,7 @@ const registerUser = async (userData) => {
     // Check if the user already exists
     const existingUser = await User.findOne({ email });
     if (existingUser) {
-      throw new Error('User already exists.');
+      throw new Error('User already exists with this email.');
     }
 
     // Hash the password
@@ -34,7 +34,7 @@ const registerUser = async (userData) => {
     return user;
   } catch (error) {
     console.error('Error registering user:', error.message);
-    throw new Error('Internal Server Error');
+    throw new Error(error.message || 'Internal Server Error');
   }
 };
 
@@ -75,7 +75,7 @@ const loginUser = async (credentials) => {
     return token;
   } catch (error) {
     console.error('Error logging in user:', error.message);
-    throw new Error('Internal Server Error');
+    throw new Error(error.message || 'Internal Server Error');
   }
 };
 
@@ -94,7 +94,7 @@ const getUser = async (userId) => {
     return user;
   } catch (error) {
     console.error('Error getting user:', error.message);
-    throw new Error('Internal Server Error');
+    throw new Error(error.message || 'Internal Server Error');
   }
 };
 

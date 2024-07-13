@@ -1,29 +1,37 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import './styles/Welcome.css';
-import Footer from '../components/Footer';
+import { useNavigate } from 'react-router-dom';
 
 /**
- * Welcome page component.
- * Provides navigation options for users to log in or sign up.
- * Displays the TaskMaster logo and navigation buttons.
+ * Welcome component for the TaskMaster application.
+ * Provides navigation to login and sign-up pages.
  * 
  * @returns {JSX.Element} The rendered Welcome page component.
  */
 const Welcome = () => {
+  const navigate = useNavigate();
+
+  const handleLogin = () => {
+    navigate('/login');
+  };
+
+  const handleSignUp = () => {
+    navigate('/signup');
+  };
+
   return (
     <div className="welcome-container">
-      <div className="logo-container">
-        <img src="/assets/logo.svg" alt="TaskMaster Logo" className="large-logo" />
-        <h1>TaskMaster</h1>
+      <div className="welcome-content">
+        <h1>Welcome to TaskMaster</h1>
+        <p>Stay on top of tasks and goals</p>
+        <div className="button-container">
+          <button onClick={handleLogin} className="btn login-btn">Login</button>
+          <button onClick={handleSignUp} className="btn signup-btn">Sign Up</button>
+        </div>
       </div>
-      <div className="button-container">
-        <Link to="/login" className="btn">Login</Link>
-        <Link to="/signup" className="btn">Sign Up</Link>
-      </div>
-      <Footer />
     </div>
   );
 };
 
 export default Welcome;
+

@@ -11,10 +11,6 @@ import defaultUserIcon from '../assets/defaultUserIcon.png';
 const Header = () => {
   const navigate = useNavigate();
 
-  const handleLogoClick = () => {
-    navigate('/home');
-  };
-
   const handleUserIconClick = () => {
     navigate('/settings');
   };
@@ -22,12 +18,12 @@ const Header = () => {
   const handleLogoutClick = () => {
     // Add your logout logic here
     console.log('Logout clicked');
-    navigate('/welcome');
+    navigate('/login');
   };
 
   return (
     <header className="header">
-      <div className="logo-container" onClick={handleLogoClick}>
+      <div className="logo-container">
         <img src={logo} alt="TaskMaster Logo" className="logo" />
       </div>
       <h1 className="title">TaskMaster</h1>

@@ -1,61 +1,77 @@
+/* Ensure the main body or root element takes full height */
+html, body {
+  height: 100%;
+  margin: 0;
+  font-family: 'Arial', sans-serif;
+  background-color: #f0f2f5;
+}
+
 .welcome-container {
   display: flex;
-  flex-direction: column;
-  align-items: center;
   justify-content: center;
-  min-height: 100vh;
+  align-items: center;
+  height: 100vh;
   text-align: center;
-  background-color: #f4f4f4;
+  color: #333;
+  padding: 20px;
 }
 
-.logo-container {
+.welcome-content {
+  background: #fff;
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.logo {
+  width: 100px;
+  height: 100px;
   margin-bottom: 20px;
-}
-
-.large-logo {
-  width: 150px;
-  height: auto;
 }
 
 h1 {
   font-size: 2.5rem;
-  color: #333;
+  margin-bottom: 20px;
+}
+
+p {
+  font-size: 1.2rem;
+  margin-bottom: 40px;
 }
 
 .button-container {
-  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
 }
 
 .btn {
-  display: inline-block;
-  padding: 10px 20px;
-  margin: 5px;
-  font-size: 1rem;
-  color: #fff;
   background-color: #007bff;
-  text-decoration: none;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 1rem;
   border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
 .btn:hover {
   background-color: #0056b3;
 }
 
-footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  text-align: center;
-  padding: 10px;
-  background-color: #fff;
-  color: #333;
+.login-btn {
+  background-color: #28a745;
 }
 
-footer a {
-  color: #007bff;
-  text-decoration: none;
+.login-btn:hover {
+  background-color: #218838;
 }
 
-footer a:hover {
-  text-decoration: underline;
+.signup-btn {
+  background-color: #ffc107;
+}
+
+.signup-btn:hover {
+  background-color: #e0a800;
 }

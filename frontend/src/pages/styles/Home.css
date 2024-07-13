@@ -3,11 +3,17 @@
   flex-direction: column;
   align-items: center;
   padding: 20px;
+  height: 100vh; /* Ensure the container takes up the full viewport height */
+  overflow: hidden; /* Prevent the page from scrolling */
 }
 
 .home-content {
   width: 100%;
   max-width: 1200px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden; /* Ensure the content does not scroll */
 }
 
 .search-filter {
@@ -43,6 +49,9 @@
   border-radius: 8px;
   background-color: #f9f9f9;
   padding: 20px;
+  flex: 1; /* Allow the task list to grow */
+  overflow-y: auto; /* Make the task list scrollable */
+  height: 100%; /* Full height of the parent container */
 }
 
 .task-item {

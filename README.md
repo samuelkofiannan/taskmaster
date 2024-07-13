@@ -37,7 +37,7 @@ TaskMaster is a web application designed to help individuals and teams stay orga
 
 - Node.js
 - Express
-- MySQL
+- MongoDB
 
 ### Libraries
 
@@ -57,7 +57,7 @@ TaskMaster is a web application designed to help individuals and teams stay orga
 
 - Node.js (v12 or higher)
 - npm (v6 or higher)
-- MySQL
+- MongoDB
 
 ### Installation
 
@@ -80,8 +80,7 @@ TaskMaster is a web application designed to help individuals and teams stay orga
    ```
 
 4. **Database Setup**:
-   - Create a MySQL database named `taskmaster`.
-   - Import the database schema located in `backend/config/dbConfig.js`.
+   - Create a MongoDB database named `taskmaster`.
 
 5. **Environment Variables**:
    - Create a `.env` file in the `backend` directory and add the following:
@@ -119,7 +118,7 @@ taskmaster/
 │   ├── config/
 │   │   └── dbConfig.js
 │   ├── index.js
-├── client/
+├── frontend/
 │   ├── public/
 │   │   └── index.html
 │   ├── src/

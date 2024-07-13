@@ -1,69 +1,54 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios'; // Import axios for making HTTP requests
-import './styles/SignUp.css'; // Ensure this path is correct
+import axios from 'axios';
+import './styles/SignUp.css';
 
-/**
- * SignUp component for user registration.
- * Provides functionality for registering new users by interacting with the backend API.
- * 
- * @returns {JSX.Element} The rendered SignUp page component.
- */
 const SignUp = () => {
-  const [username, setUsername] = useState(''); // State to manage the username input field
-  const [email, setEmail] = useState(''); // State to manage the email input field
-  const [password, setPassword] = useState(''); // State to manage the password input field
-  const [error, setError] = useState(''); // State to manage registration errors
-  const navigate = useNavigate(); // Hook for programmatic navigation
+  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const navigate = useNavigate();
 
-  /**
-   * Handle sign-up form submission.
-   * @param {React.FormEvent<HTMLFormElement>} event - Event object for form submission.
-   */
   const handleSignUp = async (event) => {
     event.preventDefault();
 
-    // Validate input fields
     if (!username || !email || !password) {
       setError('Please fill in all fields.');
       return;
     }
 
     try {
-      // Make a POST request to the backend API for registration
       const response = await axios.post('/api/auth/register', {
         username,
         email,
         password,
       });
 
-      // Check if the registration was successful
       if (response.status === 201) {
         console.log('Sign-up successful!');
-        navigate('/login'); // Redirect to the Login page
+        navigate('/login');
       }
     } catch (err) {
-      // Enhanced error handling
+      console.error('Error details:', err.response || err);
       if (err.response) {
-        // Backend returned an error response
         if (err.response.data && err.response.data.error) {
-          setError(err.response.data.error); // Display error message from the backend
+          setError(err.response.data.error);
         } else {
-          setError('An unexpected error occurred.'); // Display generic error message
+          setError('An unexpected error occurred.');
         }
       } else {
-        // Network or other errors
-        setError('Unable to connect to the server.'); // Display network error message
+        setError('Unable to connect to the server.');
       }
     }
   };
 
   const handleLogin = () => {
-    navigate('/login'); // Redirect to the Login page
+    navigate('/login');
   };
 
   const handleCancel = () => {
-    navigate('/'); // Redirect to the Welcome page
+    navigate('/');
   };
 
   return (

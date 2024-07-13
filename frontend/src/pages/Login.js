@@ -1,16 +1,13 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import Header from '../components/Header';
-import Footer from '../components/Footer';
-import './styles/login.css';
+import axios from 'axios'; // Import axios for making HTTP requests
+import './styles/login.css'; // Ensure this path is correct
 
 /**
- * Login page component.
- * Allows existing users to log in to their account.
- * Includes fields for username and password, and buttons for login, sign up, and cancel.
+ * Login component for user authentication.
+ * Provides functionality for logging in users by interacting with the backend API.
  * 
- * @returns {JSX.Element} The rendered login page component.
+ * @returns {JSX.Element} The rendered Login page component.
  */
 const Login = () => {
   const [username, setUsername] = useState(''); // State to manage the username input field
@@ -19,44 +16,55 @@ const Login = () => {
   const navigate = useNavigate(); // Hook for programmatic navigation
 
   /**
-   * Handles the login form submission.
-   * Sends a POST request to the backend to authenticate the user.
-   * On success, redirects to the Home page. On failure, displays an error message.
-   * 
-   * @param {React.FormEvent} event - The form submission event.
+   * Handle login form submission.
+   * @param {React.FormEvent<HTMLFormElement>} event - Event object for form submission.
    */
   const handleLogin = async (event) => {
     event.preventDefault();
-    
+
+    // Validate input fields
+    if (!username || !password) {
+      setError('Please fill in all fields.');
+      return;
+    }
+
     try {
-      const response = await axios.post('/api/auth/login', { username, password });
-      localStorage.setItem('token', response.data.token); // Save the token to local storage
-      navigate('/home'); // Redirect to the Home page
+      // Make a POST request to the backend API for authentication
+      const response = await axios.post('/api/auth/login', {
+        email: username,
+        password,
+      });
+
+      // Store the JWT token received from the backend
+      localStorage.setItem('token', response.data.token);
+
+      // Check if the login was successful
+      if (response.status === 200) {
+        console.log('Login successful!');
+        navigate('/home'); // Redirect to the Home page
+      }
     } catch (err) {
-      setError('Invalid credentials. Please try again.'); // Display error message
+      // Handle errors from the backend
+      if (err.response && err.response.data && err.response.data.error) {
+        setError(err.response.data.error); // Display error message from the backend
+      } else {
+        setError('An unexpected error occurred.'); // Display generic error message
+      }
     }
   };
 
-  /**
-   * Handles navigation to the Sign Up page.
-   */
   const handleSignUp = () => {
     navigate('/signup'); // Redirect to the Sign Up page
   };
 
-  /**
-   * Handles navigation to the Welcome page.
-   */
   const handleCancel = () => {
     navigate('/'); // Redirect to the Welcome page
   };
 
   return (
     <div className="login-container">
-      <Header />
       <div className="login-form">
-        <img src="/path/to/your/logo.svg" alt="TaskMaster Logo" className="logo" />
-        <h1>TaskMaster</h1>
+        <h1>Login</h1>
         <form onSubmit={handleLogin}>
           <div className="input-group">
             <label htmlFor="username">Username:</label>
@@ -86,7 +94,6 @@ const Login = () => {
           </div>
         </form>
       </div>
-      <Footer />
     </div>
   );
 };

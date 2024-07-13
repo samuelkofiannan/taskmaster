@@ -1,9 +1,3 @@
-/* Ensure the main body or root element takes full height */
-html, body {
-  height: 100%;
-  margin: 0;
-}
-
 .settings-container {
   display: flex;
   justify-content: center; /* Center horizontally */
@@ -38,8 +32,23 @@ html, body {
   margin-top: 10px;
 }
 
+.profile-picture button {
+  display: block;
+  margin: 10px auto;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.profile-picture button:hover {
+  background-color: #0056b3;
+}
+
 .form-group {
-  margin-bottom: 30px; /* Increased space between form groups */
+  margin-bottom: 15px;
 }
 
 .form-group label {
@@ -55,17 +64,31 @@ html, body {
   border-radius: 4px;
 }
 
+.form-group button {
+  display: block;
+  margin: 10px auto;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.form-group button:hover {
+  background-color: #0056b3;
+}
+
 .error-message {
   color: red;
   margin-top: 10px;
 }
 
 .form-buttons {
-  margin-top: 30px; /* Increased space between form groups and buttons */
+  margin-top: 20px;
 }
 
-.form-buttons button,
-.save-button {
+.form-buttons button {
   background-color: #007bff;
   color: white;
   border: none;
@@ -75,16 +98,6 @@ html, body {
   cursor: pointer;
 }
 
-.form-buttons button:hover,
-.save-button:hover {
+.form-buttons button:hover {
   background-color: #0056b3;
-}
-
-/* Specific styling for save buttons */
-.save-button {
-  background-color: #28a745; /* Green color for save buttons */
-}
-
-.save-button:hover {
-  background-color: #218838; /* Darker green on hover */
 }

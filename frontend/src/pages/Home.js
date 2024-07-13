@@ -1,8 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import Header from '../components/Header';
-import Footer from '../components/Footer';
 import './styles/Home.css';
 
 /**
@@ -19,8 +16,6 @@ const Home = () => {
   const [selectedTask, setSelectedTask] = useState(null); // State to manage the currently selected task
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false); // State to manage delete confirmation dialog
   const [taskToDelete, setTaskToDelete] = useState(null); // State to manage task to delete
-
-  const navigate = useNavigate(); // Hook for programmatic navigation
 
   /**
    * Fetches tasks from the backend on component mount.
@@ -70,7 +65,7 @@ const Home = () => {
    * Handles navigation to the Add Task page.
    */
   const handleAddTask = () => {
-    navigate('/add-task'); // Redirect to Add Task page
+    window.location.href = '/add-task'; // Redirect to Add Task page
   };
 
   /**
@@ -79,7 +74,7 @@ const Home = () => {
    * @param {Object} task - The task to be edited.
    */
   const handleEditTask = (task) => {
-    navigate(`/edit-task/${task._id}`); // Redirect to Edit Task page
+    window.location.href = `/edit-task/${task._id}`; // Redirect to Edit Task page
   };
 
   /**
@@ -117,7 +112,6 @@ const Home = () => {
 
   return (
     <div className="home-container">
-      <Header />
       <div className="home-content">
         <div className="search-filter">
           <input
@@ -164,7 +158,6 @@ const Home = () => {
           </div>
         )}
       </div>
-      <Footer />
     </div>
   );
 };

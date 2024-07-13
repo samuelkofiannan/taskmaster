@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './styles/EditTask.css';
 import axios from 'axios';
-import Header from '../components/Header';
-import Footer from '../components/Footer';
 import { useParams, useNavigate } from 'react-router-dom';
 
 /**
@@ -93,7 +91,6 @@ const EditTask = () => {
 
   return (
     <div className="edit-task-container">
-      <Header />
       <div className="edit-task-content">
         <h2>Edit Task</h2>
         <form onSubmit={handleSubmit}>
@@ -209,7 +206,6 @@ const EditTask = () => {
           </div>
         </form>
       </div>
-      <Footer />
     </div>
   );
 };

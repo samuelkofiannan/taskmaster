@@ -1,43 +1,41 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './styles/Settings.css';
 import axios from 'axios';
-import Header from '../components/Header';
-import Footer from '../components/Footer';
 import { useNavigate } from 'react-router-dom';
 
 /**
  * Settings component for managing user profile and password settings.
- * Provides functionality to update the profile picture, username, and password.
+ * Provides functionality to update the profile picture, username, and password independently.
  * 
  * @returns {JSX.Element} The rendered Settings page component.
  */
 const Settings = () => {
   const [profile, setProfile] = useState({
-    profilePicture: '', // URL or base64 string for the current profile picture
+    profilePicture: 'assets/userdefault.png', // Default image path
     username: '',
-    oldPassword: '',
-    newPassword: '',
   });
-
   const [newProfilePicture, setNewProfilePicture] = useState(null);
-  const navigate = useNavigate(); // Hook for programmatic navigation
+  const [username, setUsername] = useState('');
+  const [oldPassword, setOldPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [passwordConfirm, setPasswordConfirm] = useState('');
+  const navigate = useNavigate();
 
-  /**
-   * Handle input changes for form fields.
-   * @param {React.ChangeEvent<HTMLInputElement>} e - Event object for input change.
-   */
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setProfile((prevProfile) => ({
-      ...prevProfile,
-      [name]: value,
-    }));
-  };
+  useEffect(() => {
+    // Fetch user data from the API or local storage on component mount
+    const fetchUserProfile = async () => {
+      try {
+        const response = await axios.get('/api/user/profile');
+        setProfile(response.data);
+        setUsername(response.data.username);
+      } catch (error) {
+        console.error('Error fetching profile data:', error);
+      }
+    };
 
-  /**
-   * Handle profile picture upload.
-   * @param {React.ChangeEvent<HTMLInputElement>} e - Event object for file input change.
-   */
+    fetchUserProfile();
+  }, []);
+
   const handleProfilePictureChange = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -49,92 +47,135 @@ const Settings = () => {
     }
   };
 
-  /**
-   * Handle form submission for saving profile and password changes.
-   * @param {React.FormEvent<HTMLFormElement>} e - Event object for form submission.
-   */
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const updatedProfile = { ...profile };
-    if (newProfilePicture) {
-      updatedProfile.profilePicture = newProfilePicture;
-    }
+  const handleUsernameChange = (e) => {
+    setUsername(e.target.value);
+  };
+
+  const handleOldPasswordChange = (e) => {
+    setOldPassword(e.target.value);
+  };
+
+  const handleNewPasswordChange = (e) => {
+    setNewPassword(e.target.value);
+  };
+
+  const handlePasswordConfirmChange = (e) => {
+    setPasswordConfirm(e.target.value);
+  };
+
+  const saveProfilePicture = async () => {
+    if (!newProfilePicture) return;
+
     try {
-      await axios.put('/api/user/settings', updatedProfile);
-      alert('Changes saved successfully!');
-      navigate('/home'); // Redirect to the Home page or any other page as required
+      await axios.put('/api/user/update-picture', { profilePicture: newProfilePicture });
+      setProfile((prevProfile) => ({ ...prevProfile, profilePicture: newProfilePicture }));
+      alert('Profile picture updated successfully!');
     } catch (error) {
-      console.error('Error updating settings', error);
+      console.error('Error updating profile picture:', error);
     }
   };
 
-  /**
-   * Handle cancellation of changes and redirect to previous page.
-   */
+  const saveUsername = async () => {
+    try {
+      await axios.put('/api/user/update-username', { username });
+      setProfile((prevProfile) => ({ ...prevProfile, username }));
+      alert('Username updated successfully!');
+    } catch (error) {
+      console.error('Error updating username:', error);
+    }
+  };
+
+  const savePassword = async () => {
+    if (newPassword !== passwordConfirm) {
+      alert('New passwords do not match.');
+      return;
+    }
+    try {
+      await axios.put('/api/user/update-password', { oldPassword, newPassword });
+      alert('Password updated successfully!');
+    } catch (error) {
+      console.error('Error updating password:', error);
+    }
+  };
+
   const handleCancel = () => {
-    navigate(-1); // Navigate to the previous page
+    navigate(-1);
   };
 
   return (
     <div className="settings-container">
-      <Header />
       <div className="settings-content">
         <h2>Profile Settings</h2>
-        <form onSubmit={handleSubmit}>
-          <div className="form-group">
-            <label>Profile Picture:</label>
-            <div className="profile-picture">
-              {newProfilePicture ? (
-                <img src={newProfilePicture} alt="New Profile" />
-              ) : (
-                <img src={profile.profilePicture} alt="Current Profile" />
-              )}
-              <input type="file" accept="image/*" onChange={handleProfilePictureChange} />
-            </div>
-          </div>
-          <div className="form-group">
-            <label htmlFor="username">Username:</label>
-            <input
-              type="text"
-              id="username"
-              name="username"
-              value={profile.username}
-              onChange={handleInputChange}
-              required
+        <div className="form-group">
+          <label>Profile Picture:</label>
+          <div className="profile-picture">
+            <img
+              src={newProfilePicture || profile.profilePicture}
+              alt="Profile"
             />
-          </div>
-          <h2>Password Settings</h2>
-          <div className="form-group">
-            <label htmlFor="oldPassword">Old Password:</label>
-            <input
-              type="password"
-              id="oldPassword"
-              name="oldPassword"
-              value={profile.oldPassword}
-              onChange={handleInputChange}
-              required
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="newPassword">New Password:</label>
-            <input
-              type="password"
-              id="newPassword"
-              name="newPassword"
-              value={profile.newPassword}
-              onChange={handleInputChange}
-              required
-            />
-          </div>
-          <div className="form-buttons">
-            <button type="submit">Save Changes</button>
-            <button type="button" onClick={handleCancel}>
-              Cancel
+            <input type="file" accept="image/*" onChange={handleProfilePictureChange} />
+            <button type="button" onClick={saveProfilePicture}>
+              Save Profile Picture
             </button>
           </div>
-        </form>
+        </div>
+        <div className="form-group">
+          <label htmlFor="username">Username:</label>
+          <input
+            type="text"
+            id="username"
+            name="username"
+            value={username}
+            onChange={handleUsernameChange}
+            required
+          />
+          <button type="button" onClick={saveUsername}>
+            Save Username
+          </button>
+        </div>
+        <h2>Password Settings</h2>
+        <div className="form-group">
+          <label htmlFor="oldPassword">Old Password:</label>
+          <input
+            type="password"
+            id="oldPassword"
+            name="oldPassword"
+            value={oldPassword}
+            onChange={handleOldPasswordChange}
+            required
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="newPassword">New Password:</label>
+          <input
+            type="password"
+            id="newPassword"
+            name="newPassword"
+            value={newPassword}
+            onChange={handleNewPasswordChange}
+            required
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="passwordConfirm">Confirm New Password:</label>
+          <input
+            type="password"
+            id="passwordConfirm"
+            name="passwordConfirm"
+            value={passwordConfirm}
+            onChange={handlePasswordConfirmChange}
+            required
+          />
+        </div>
+        <button type="button" onClick={savePassword}>
+          Save Password
+        </button>
+        <div className="form-buttons">
+          <button type="button" onClick={handleCancel}>
+            Cancel
+          </button>
+        </div>
       </div>
-      <Footer />
     </div>
   );
 };

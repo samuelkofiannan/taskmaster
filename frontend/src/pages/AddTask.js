@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import Header from '../components/Header';
-import Footer from '../components/Footer';
 import './styles/AddTask.css';
 
 /**
@@ -21,10 +19,6 @@ const AddTask = () => {
   const [notification, setNotification] = useState(false);
   const [notificationDate, setNotificationDate] = useState('');
   const [notificationTime, setNotificationTime] = useState('');
-  const [showDueDate, setShowDueDate] = useState(false);
-  const [showPriority, setShowPriority] = useState(false);
-  const [showStatus, setShowStatus] = useState(false);
-  const [showNotification, setShowNotification] = useState(false);
 
   const navigate = useNavigate(); // Hook for programmatic navigation
 
@@ -64,7 +58,6 @@ const AddTask = () => {
 
   return (
     <div className="add-task-container">
-      <Header />
       <div className="add-task-content">
         <form onSubmit={handleSubmit}>
           <div className="form-group">
@@ -88,118 +81,70 @@ const AddTask = () => {
             />
           </div>
 
-          <div className="clickable-group">
-            <div
-              className="clickable"
-              onClick={() => setShowDueDate(!showDueDate)}
-            >
-              Due Date
-              {showDueDate && (
-                <div className="dropdown">
-                  <label htmlFor="dueDate">Select Due Date:</label>
-                  <input
-                    type="date"
-                    id="dueDate"
-                    value={dueDate}
-                    onChange={(e) => setDueDate(e.target.value)}
-                  />
-                </div>
-              )}
-            </div>
+          <div className="form-group">
+            <label htmlFor="dueDate">Due Date:</label>
+            <input
+              type="date"
+              id="dueDate"
+              value={dueDate}
+              onChange={(e) => setDueDate(e.target.value)}
+              required
+            />
+          </div>
 
-            <div
-              className="clickable"
-              onClick={() => setShowPriority(!showPriority)}
+          <div className="form-group">
+            <label htmlFor="priority">Priority:</label>
+            <select
+              id="priority"
+              value={priority}
+              onChange={(e) => setPriority(e.target.value)}
+              required
             >
-              Priority
-              {showPriority && (
-                <div className="dropdown">
-                  <label htmlFor="priority">Select Priority:</label>
-                  <div className="priority-options">
-                    <span
-                      className={`priority high ${priority === 'High' ? 'selected' : ''}`}
-                      onClick={() => setPriority('High')}
-                    >
-                      High
-                    </span>
-                    <span
-                      className={`priority medium ${priority === 'Medium' ? 'selected' : ''}`}
-                      onClick={() => setPriority('Medium')}
-                    >
-                      Medium
-                    </span>
-                    <span
-                      className={`priority low ${priority === 'Low' ? 'selected' : ''}`}
-                      onClick={() => setPriority('Low')}
-                    >
-                      Low
-                    </span>
-                  </div>
-                </div>
-              )}
-            </div>
+              <option value="High">High</option>
+              <option value="Medium">Medium</option>
+              <option value="Low">Low</option>
+            </select>
+          </div>
 
-            <div
-              className="clickable"
-              onClick={() => setShowStatus(!showStatus)}
+          <div className="form-group">
+            <label htmlFor="status">Status:</label>
+            <select
+              id="status"
+              value={status}
+              onChange={(e) => setStatus(e.target.value)}
+              required
             >
-              Status
-              {showStatus && (
-                <div className="dropdown">
-                  <label htmlFor="status">Select Status:</label>
-                  <div className="status-options">
-                    <span
-                      className={`status pending ${status === 'Pending' ? 'selected' : ''}`}
-                      onClick={() => setStatus('Pending')}
-                    >
-                      Pending
-                    </span>
-                    <span
-                      className={`status completed ${status === 'Completed' ? 'selected' : ''}`}
-                      onClick={() => setStatus('Completed')}
-                    >
-                      Completed
-                    </span>
-                  </div>
-                </div>
-              )}
-            </div>
+              <option value="Pending">Pending</option>
+              <option value="Completed">Completed</option>
+            </select>
+          </div>
 
-            <div
-              className="clickable"
-              onClick={() => setShowNotification(!showNotification)}
-            >
-              Notification
-              {showNotification && (
-                <div className="dropdown">
-                  <label htmlFor="notification">Enable Notification:</label>
-                  <input
-                    type="checkbox"
-                    id="notification"
-                    checked={notification}
-                    onChange={(e) => setNotification(e.target.checked)}
-                  />
-                  {notification && (
-                    <div className="notification-settings">
-                      <label htmlFor="notificationDate">Select Date:</label>
-                      <input
-                        type="date"
-                        id="notificationDate"
-                        value={notificationDate}
-                        onChange={(e) => setNotificationDate(e.target.value)}
-                      />
-                      <label htmlFor="notificationTime">Select Time:</label>
-                      <input
-                        type="time"
-                        id="notificationTime"
-                        value={notificationTime}
-                        onChange={(e) => setNotificationTime(e.target.value)}
-                      />
-                    </div>
-                  )}
-                </div>
-              )}
-            </div>
+          <div className="form-group">
+            <label htmlFor="notification">Enable Notification:</label>
+            <input
+              type="checkbox"
+              id="notification"
+              checked={notification}
+              onChange={(e) => setNotification(e.target.checked)}
+            />
+            {notification && (
+              <div className="notification-settings">
+                <label htmlFor="notificationDate">Select Date:</label>
+                <input
+                  type="date"
+                  id="notificationDate"
+                  value={notificationDate}
+                  onChange={(e) => setNotificationDate(e.target.value)}
+                />
+                <label htmlFor="notificationTime">Select Time:</label>
+                <input
+                  type="time"
+                  id="notificationTime"
+                  value={notificationTime}
+                  onChange={(e) => setNotificationTime(e.target.value)}
+                />
+              </div>
+            )}
           </div>
 
           <div className="form-buttons">
@@ -208,7 +153,6 @@ const AddTask = () => {
           </div>
         </form>
       </div>
-      <Footer />
     </div>
   );
 };
