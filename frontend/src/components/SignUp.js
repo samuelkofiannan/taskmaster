@@ -1,54 +1,44 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import './styles/SignUp.css';
+import './styles/SignUp.css'; // Ensure this path is correct
 
+/**
+ * SignUp component for user registration.
+ * 
+ * @returns {JSX.Element} The rendered SignUp page component.
+ */
 const SignUp = () => {
-  const [username, setUsername] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
-  const navigate = useNavigate();
+  const [username, setUsername] = useState(''); // State to manage the username input field
+  const [email, setEmail] = useState(''); // State to manage the email input field
+  const [password, setPassword] = useState(''); // State to manage the password input field
+  const [error, setError] = useState(''); // State to manage registration errors
+  const navigate = useNavigate(); // Hook for programmatic navigation
 
-  const handleSignUp = async (event) => {
+  /**
+   * Handle sign-up form submission.
+   * @param {React.FormEvent<HTMLFormElement>} event - Event object for form submission.
+   */
+  const handleSignUp = (event) => {
     event.preventDefault();
 
+    // Validate input fields
     if (!username || !email || !password) {
       setError('Please fill in all fields.');
       return;
     }
 
-    try {
-      const response = await axios.post('/api/auth/register', {
-        username,
-        email,
-        password,
-      });
-
-      if (response.status === 201) {
-        console.log('Sign-up successful!');
-        navigate('/login');
-      }
-    } catch (err) {
-      console.error('Error details:', err.response || err);
-      if (err.response) {
-        if (err.response.data && err.response.data.error) {
-          setError(err.response.data.error);
-        } else {
-          setError('An unexpected error occurred.');
-        }
-      } else {
-        setError('Unable to connect to the server.');
-      }
-    }
+    // Simulate successful registration by storing user data in local storage
+    localStorage.setItem('user', JSON.stringify({ username, email, password }));
+    console.log('Sign-up successful!');
+    navigate('/home'); // Redirect to the home page
   };
 
   const handleLogin = () => {
-    navigate('/login');
+    navigate('/login'); // Redirect to the Login page
   };
 
   const handleCancel = () => {
-    navigate('/');
+    navigate('/'); // Redirect to the Welcome page
   };
 
   return (

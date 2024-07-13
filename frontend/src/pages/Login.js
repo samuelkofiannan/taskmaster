@@ -1,11 +1,9 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios'; // Import axios for making HTTP requests
 import './styles/login.css'; // Ensure this path is correct
 
 /**
  * Login component for user authentication.
- * Provides functionality for logging in users by interacting with the backend API.
  * 
  * @returns {JSX.Element} The rendered Login page component.
  */
@@ -19,7 +17,7 @@ const Login = () => {
    * Handle login form submission.
    * @param {React.FormEvent<HTMLFormElement>} event - Event object for form submission.
    */
-  const handleLogin = async (event) => {
+  const handleLogin = (event) => {
     event.preventDefault();
 
     // Validate input fields
@@ -28,29 +26,18 @@ const Login = () => {
       return;
     }
 
-    try {
-      // Make a POST request to the backend API for authentication
-      const response = await axios.post('/api/auth/login', {
-        email: username,
-        password,
-      });
+    // Simulate a successful login
+    setTimeout(() => {
+      console.log('Login successful!');
+      localStorage.setItem('token', 'dummy-token'); // Simulate storing a token
+      navigate('/home'); // Redirect to the Home page
+    }, 1000); // Simulate a delay of 1 second
 
-      // Store the JWT token received from the backend
-      localStorage.setItem('token', response.data.token);
-
-      // Check if the login was successful
-      if (response.status === 200) {
-        console.log('Login successful!');
-        navigate('/home'); // Redirect to the Home page
-      }
-    } catch (err) {
-      // Handle errors from the backend
-      if (err.response && err.response.data && err.response.data.error) {
-        setError(err.response.data.error); // Display error message from the backend
-      } else {
-        setError('An unexpected error occurred.'); // Display generic error message
-      }
-    }
+    // Simulate an error for demonstration
+    // Uncomment the code below to simulate an error response
+    // setTimeout(() => {
+    //   setError('Invalid username or password.');
+    // }, 1000); // Simulate a delay of 1 second
   };
 
   const handleSignUp = () => {

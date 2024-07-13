@@ -1,12 +1,24 @@
-.footer {
+footer {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 0.5rem;
-  background-color: #f9f9f9;
-  border-top: 1px solid #ccc;
+  padding: 1rem; /* Increased padding for better spacing */
+  background-color: #f1f1f1; /* Light background color for better contrast */
+  border-top: 1px solid #ddd; /* Lighter border color */
 }
 
 .footer p {
-  margin: 0.25rem 0;
+  margin: 0.5rem 0; /* Increased margin for better spacing between paragraphs */
+  font-size: 1rem; /* Standard font size for readability */
+  color: #333; /* Darker text color for better contrast */
+}
+
+.powered-by {
+  font-size: 0.5rem; /* Slightly smaller font size for the powered by text */
+}
+
+.copyright-logo {
+  font-size: 0.75rem; /* Smaller font size for the copyright symbol */
+  vertical-align: super; /* Align the symbol slightly higher */
+  margin-left: 0.3rem; /* Add a small margin to the left of the copyright symbol */
 }

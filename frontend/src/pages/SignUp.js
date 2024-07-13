@@ -1,11 +1,9 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios'; // Import axios for making HTTP requests
 import './styles/SignUp.css'; // Ensure this path is correct
 
 /**
  * SignUp component for user registration.
- * Provides functionality for registering new users by interacting with the backend API.
  * 
  * @returns {JSX.Element} The rendered SignUp page component.
  */
@@ -20,7 +18,7 @@ const SignUp = () => {
    * Handle sign-up form submission.
    * @param {React.FormEvent<HTMLFormElement>} event - Event object for form submission.
    */
-  const handleSignUp = async (event) => {
+  const handleSignUp = (event) => {
     event.preventDefault();
 
     // Validate input fields
@@ -29,33 +27,11 @@ const SignUp = () => {
       return;
     }
 
-    try {
-      // Make a POST request to the backend API for registration
-      const response = await axios.post('/api/auth/register', {
-        username,
-        email,
-        password,
-      });
-
-      // Check if the registration was successful
-      if (response.status === 201) {
-        console.log('Sign-up successful!');
-        navigate('/login'); // Redirect to the Login page
-      }
-    } catch (err) {
-      // Enhanced error handling
-      if (err.response) {
-        // Backend returned an error response
-        if (err.response.data && err.response.data.error) {
-          setError(err.response.data.error); // Display error message from the backend
-        } else {
-          setError('An unexpected error occurred.'); // Display generic error message
-        }
-      } else {
-        // Network or other errors
-        setError('Unable to connect to the server.'); // Display network error message
-      }
-    }
+    // Simulate a successful registration
+    setTimeout(() => {
+      console.log('Sign-up successful!');
+      navigate('/home'); // Redirect to the home page
+    }, 500); // Added a delay to simulate processing time
   };
 
   const handleLogin = () => {

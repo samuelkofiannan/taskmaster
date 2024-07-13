@@ -9,7 +9,9 @@ const Footer = () => {
   return (
     <footer className="footer">
       <p>TaskMaster. All rights reserved.</p>
-      <p><em>Powered by AfiK</em></p>
+      <p className="powered-by">
+        <em>Powered by AfiK</em> <span className="copyright-logo">©</span>
+      </p>
     </footer>
   );
 };
