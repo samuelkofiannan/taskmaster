@@ -233,4 +233,4 @@ Contributions are welcome! Please follow these steps:
 
 For any questions or feedback, please reach out to:
 - **Afia Adobea Owusu-Asare**: Frontend Engineer
-- **Kofi Annan**: Backend Engineer
+- **Kofi Annan**: Frontend Engineer
