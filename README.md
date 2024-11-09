@@ -111,34 +111,75 @@ taskmaster/
 ├── backend/
 │   ├── controllers/
 │   │   └── taskController.js
+│   │   └── authController.js
+│   │   └── settingsController.js
 │   ├── models/
 │   │   └── taskModel.js
+│   │   └── userModel.js
 │   ├── routes/
 │   │   └── taskRoutes.js
+│   │   └── authRoutes.js
+│   │   └── settingsRoutes.js
 │   ├── config/
-│   │   └── dbConfig.js
-│   ├── index.js
+│   │   └── db.js
+│   ├── middleware/
+│   │   └── authMiddleware.js
+│   │   └── errorMiddleware.js
+│   ├── server.js
 ├── frontend/
 │   ├── public/
 │   │   └── index.html
 │   ├── src/
 │   │   ├── components/
+│   │   │   ├── Footer.js
+│   │   │   ├── Header.js
+│   │   │   ├── Home.js
+│   │   │   ├── Login.js
+│   │   │   ├── Settings.js
+│   │   │   ├── SignUp.js
+│   │   │   ├── TaskForm.js
 │   │   │   ├── TaskList.js
-│   │   │   ├── TaskItem.js
-│   │   │   ├── AddTask.js
+│   │   │   ├── Tasks.js
 │   │   │   └── styles/
-│   │   │       ├── TaskList.css
-│   │   │       ├── TaskItem.css
-│   │   │       └── AddTask.css
+│   │   │       ├── Footer.css
+│   │   │       ├── Header.css
+│   │   │       └── Home.css
+│   │   │       └── Settings.css
+│   │   │       └── TaskForm.css
+│   │   │       └── TaskList.css
 │   │   ├── pages/
-│   │   │   ├── HomePage.js
-│   │   │   └── HomePage.css
+│   │   │   ├── AddTask.js
+│   │   │   └── EditTask.js
+│   │   │   └── Home.js
+│   │   │   └── Login.js
+│   │   │   └── Settings.js
+│   │   │   └── SignUp.js
+│   │   │   └── Welcome.js
+│   │   │   └── styles/
+│   │   │       ├── AddTask.css 
+│   │   │       ├── EditTask.css
+│   │   │       ├── Home.css
+│   │   │       ├── login.css 
+│   │   │       ├── Settings.css
+│   │   │       ├── SignUp.css
+│   │   │       ├── SignUp.js
+│   │   │       ├── Welcome.css
+│   │   ├── redux/
+│   │   │   └── store.js
+│   │   │   └── actions/
+│   │   │       ├── taskActions.js
+│   │   │       ├── userActions.js
+│   │   │   └── reducers/
+│   │   │       ├── taskReducer.js
+│   │   │       ├── userReducer.js
 │   │   ├── App.js
 │   │   ├── App.css
 │   │   ├── index.js
 │   │   ├── index.css
 │   │   ├── api/
 │   │   │   └── tasks.js
+│   │   │   └── auth.js
+│   │   │   └── Login.js
 │   ├── package.json
 ├── .gitignore
 ├── package.json
